@@ -3,18 +3,10 @@ const playerChoice = document.querySelectorAll('button');
 const currentResultString = document.querySelector(".current-result");
 const currentHandString = document.querySelector (".current-hand");
 const finalResultString = document.querySelector(".final-result");
+
 playerChoice.forEach((choice) => choice.addEventListener('click', function() {
-    finalResultString.textContent = "";
     result = playRound(this.classList.value);
-    if (result === "win") playerPoints++;
-    else if (result === "loss") computerPoints++;
-    currentResultString.textContent = `User ${playerPoints}-${computerPoints} Computer`;
-    if ((playerPoints === 5) || (computerPoints === 5))
-    {
-        if (playerPoints === 5) finalResultString.textContent = "The match is a win";
-        else if (computerPoints === 5) finalResultString.textContent = "The match is a loss";
-        playerPoints = 0, computerPoints = 0;
-    }
+    game (result);
 }));
 
 function getComputerChoice ()
@@ -55,10 +47,16 @@ function playRound (playerSelection)
     return result;
 }
 
-function game (playerChoice)
+function game (result)
 {
-    let playerSelection = playerChoice.classList.value;
-    let result = playRound(playerSelection);
-    /*return result;
-    console.log(`User ${playerPoints}-${computerPoints} Computer: the match is a ${finalResult}`);*/
+    finalResultString.textContent = "";
+    if (result === "win") playerPoints++;
+    else if (result === "loss") computerPoints++;
+    currentResultString.textContent = `User ${playerPoints}-${computerPoints} Computer`;
+    if ((playerPoints === 5) || (computerPoints === 5))
+    {
+        if (playerPoints === 5) finalResultString.textContent = "The match is a win";
+        else if (computerPoints === 5) finalResultString.textContent = "The match is a loss";
+        playerPoints = 0, computerPoints = 0;
+    }
 }

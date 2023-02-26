@@ -1,5 +1,21 @@
-alert ("Let's play Rock paper scissors");
-game();
+let playerPoints = 0, computerPoints = 0, result;
+const playerChoice = document.querySelectorAll('button');
+const currentResultString = document.querySelector(".current-result");
+const currentHandString = document.querySelector (".current-hand");
+const finalResultString = document.querySelector(".final-result");
+playerChoice.forEach((choice) => choice.addEventListener('click', function() {
+    finalResultString.textContent = "";
+    result = playRound(this.classList.value);
+    if (result === "win") playerPoints++;
+    else if (result === "loss") computerPoints++;
+    currentResultString.textContent = `User ${playerPoints}-${computerPoints} Computer`;
+    if ((playerPoints === 5) || (computerPoints === 5))
+    {
+        if (playerPoints === 5) finalResultString.textContent = "The match is a win";
+        else if (computerPoints === 5) finalResultString.textContent = "The match is a loss";
+        playerPoints = 0, computerPoints = 0;
+    }
+}));
 
 function getComputerChoice ()
 {
@@ -11,9 +27,9 @@ function getComputerChoice ()
     return result;
 }
 
-function playRound (playerSelection, computerSelection)
+function playRound (playerSelection)
 {
-    let result;
+    let computerSelection = getComputerChoice(), result;
     if (playerSelection === "rock")
     {
         if (computerSelection === "rock") result = "draw";
@@ -34,30 +50,15 @@ function playRound (playerSelection, computerSelection)
     }
     else result = "error";
 
+    currentHandString.textContent = `${playerSelection} against ${computerSelection}: it's a ${result}`;
+
     return result;
 }
 
-function game ()
+function game (playerChoice)
 {
-    let result, playerSelection, computerSelection, finalResult;
-    let playerPoints = 0, computerPoints = 0;
-    for (let i = 0; i < 5; i++)
-    {
-        playerSelection = prompt("Choose either rock, paper, or scissors").toLocaleLowerCase();
-        computerSelection = getComputerChoice();
-        result = playRound(playerSelection, computerSelection);
-        while (result === "error") 
-        {
-            alert ("Warning: invalid input. Try again.");
-            playerSelection = prompt("Choose either rock, paper, or scissors").toLocaleLowerCase();
-            result = playRound(playerSelection, computerSelection);
-        }
-        console.log(`${playerSelection} against ${computerSelection}: it's a ${result}`);
-        if (result === "win") playerPoints++;
-        else if (result === "loss") computerPoints++;
-    }
-    if (playerPoints > computerPoints) finalResult = "win";
-    else if (playerPoints < computerPoints) finalResult = "loss";
-    else finalResult = "draw";
-    console.log(`User ${playerPoints}-${computerPoints} Computer: the match is a ${finalResult}`);
+    let playerSelection = playerChoice.classList.value;
+    let result = playRound(playerSelection);
+    /*return result;
+    console.log(`User ${playerPoints}-${computerPoints} Computer: the match is a ${finalResult}`);*/
 }
